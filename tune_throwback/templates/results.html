@@ -15,7 +15,7 @@ $(function() {
 <div class="container span6">
   
   <h1 style="text-align: center;">Look at these ancient tunes!!!!!</h1>
-  <h5 style="text-align: center;">Remember when {{ song.song }} was #{{song.rank}} on the charts? Here's what else was trending back then, way back on {{song.week}}!</h5>
+  <h5 style="text-align: center;">Remember when {{ ranked.song.title }} was #{{ranked.rank}} on the charts? Here's what else was trending back then, way back on {{ranked.week}}!</h5>
   
   <div class = "span4" style="text-align: center;">
     <form method="POST" action="results" id="song_form" class="form-inline">
@@ -35,21 +35,21 @@ $(function() {
       </tr>
     </thead>
     <tbody>
-      {% for item in songs %}
+      {% for ranked in songs %}
       <tr>
         <td>
-          <a href="/results/{{item.pk|safe}}/">
-            {{ item.song | safe }}
+          <a href="/results/{{ranked.song.pk|safe}}/">
+            {{ ranked.song.title | safe }}
           </a>
         </td>
         <td>
-          {{item.artist | safe }}
+          {{ranked.song.artist | safe }}
         </td>   
         <td>
-          <a type="button" class="btn btn-default" href="https://play.spotify.com/search/{{item.song}}%20{{item.artist}}" target="_blank">
+          <a type="button" class="btn btn-default" href="https://play.spotify.com/search/{{ranked.song.title}}%20{{ranked.song.artist}}" target="_blank">
             <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Spotify
           </a>  
-          <a type="button" class="btn btn-default" href="https://www.youtube.com/results?search_query={{item.song}}%20{{item.artist}}" target="_blank">
+          <a type="button" class="btn btn-default" href="https://www.youtube.com/results?search_query={{ranked.song.title}}%20{{ranked.song.artist}}" target="_blank">
             <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Youtube
           </a>  
         </td>               
