@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script>
+$(function() {
+  var availableTags = {{ songs | safe}};
+  $( "#tags" ).autocomplete({
+    source: availableTags
+  });
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<div class= "jumbotron">
+  <h1>Tune Throwback!</h1>
+  <h2>Enter a tune to throwback to!</h2>
+  <form method="POST" action="results" id="song_form">
+    <input class="form-control" name="song_text" id="tags" placeholder="Enter a song" />
+    {% csrf_token %}
+  </form>
+  <button type="submit" class="btn btn-primary btn-lg" form="song_form" value="Submit">Submit</button>
+</div>
+{% endblock %}
