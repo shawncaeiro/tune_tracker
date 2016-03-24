@@ -1,0 +1,1 @@
+web: gunicorn tune_project.wsgi --log-file -

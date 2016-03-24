@@ -2,9 +2,10 @@
 *.sqlite3
 tunevenv/
 data_import.py
-**/migrations/
 data_import_old.py
 **/management/
+*.json
+private.py
 
 
 # Byte-compiled / optimized / DLL files
