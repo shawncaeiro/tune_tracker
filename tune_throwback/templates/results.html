@@ -12,11 +12,15 @@ $(function() {
 {% endblock %}
 
 {% block body %}
-<div class="container span6">
+<div class="container span6" style="text-align: center;">
   
   <h1 style="text-align: center;">Look at these ancient tunes!!!!!</h1>
   <h5 style="text-align: center;">Remember when {{ ranked.song.title }} was #{{ranked.rank}} on the charts? Here's what else was trending back then, way back on {{ranked.week}}!</h5>
+
+  <iframe src="https://embed.spotify.com/?uri=spotify:trackset:THROWBACK:{% for s_id in spotify_ids %}{{ s_id.song.spotify_id }}{%if not forloop.last%},{%endif%}{% endfor %}" height = "380" frameborder="0" allowtransparency="true"></iframe>
   
+  <br>
+
   <div class = "span4" style="text-align: center;">
     <form method="POST" action="results" id="song_form" class="form-inline">
       <label for="tags">Or, try another song!</label>

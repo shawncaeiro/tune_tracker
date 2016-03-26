@@ -16,7 +16,8 @@ def results_page_helper(request, r_song):
     j_songs = json.dumps(songs)
 
     similar_songs = Rank.objects.filter(week=r_song.week).order_by('rank')[:25]
-    return render(request, 'results.html', {'all_songs': j_songs, 'ranked': r_song, 'songs':similar_songs})
+    spotify_ids = Rank.objects.filter(week=r_song.week).exclude(song__spotify_id = "").order_by('rank')[:25]
+    return render(request, 'results.html', {'all_songs': j_songs, 'ranked': r_song, 'songs':similar_songs, 'spotify_ids':spotify_ids})
 
 def results_page(request, song_id = None):
     if str(song_id).isdigit():
@@ -29,7 +30,7 @@ def results_page(request, song_id = None):
     elif request.method == 'POST':
         try:
             r_song = Rank.objects.filter(song__title= request.POST["song_text"]).order_by('rank')[0]
-            return results_page_helper(request, r_song)            
+            return results_page_helper(request, r_song)
         except:
             return redirect('/')            
     else:

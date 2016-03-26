@@ -4,6 +4,7 @@ import datetime
 class Song(models.Model):
     title = models.TextField(default='')
     artist = models.TextField(default='')
+    spotify_id = models.TextField(default='')
 
     def __str__(self):
         return "%s %s" % (self.title, self.artist)
