@@ -7,8 +7,12 @@ from tune_throwback.models import Song, Rank
 
 
 def home_page(request):
-    songs = list(Song.objects.values_list('title', flat=True).distinct())
-    j_songs = json.dumps(songs)
+    songs = list(Song.objects.values_list('title', 'artist').distinct())
+    j_songs = []
+    for song in songs:
+        j_songs.append("{0} -- {1}".format(song[0],song[1]))
+    j_songs = list(set(i.lower().title() for i in j_songs))
+    j_songs = json.dumps(j_songs)
     return render(request, 'home.html', {'songs':j_songs})
 
 def results_page_helper(request, r_song):
@@ -29,7 +33,8 @@ def results_page(request, song_id = None):
             return redirect('/results')
     elif request.method == 'POST':
         try:
-            r_song = Rank.objects.filter(song__title= request.POST["song_text"]).order_by('rank')[0]
+            s, a = request.POST["song_text"].split(' -- ')
+            r_song = Rank.objects.filter(song__title__iexact= s, song__artist__iexact= a).order_by('rank')[0]
             return results_page_helper(request, r_song)
         except:
             return redirect('/')            

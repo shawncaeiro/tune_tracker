@@ -3,7 +3,7 @@
 {% block header %}
 <script>
 $(function() {
-  var availableTags = {{ songs | safe}};
+  var availableTags = {{ songs.0 | safe}};
   $( "#tags" ).autocomplete({
     source: availableTags
   });
