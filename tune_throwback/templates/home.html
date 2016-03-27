@@ -3,7 +3,7 @@
 {% block header %}
 <script>
 $(function() {
-  var availableTags = {{ songs.0 | safe}};
+  var availableTags = {{ songs | safe}};
   $( "#tags" ).autocomplete({
     source: availableTags
   });
@@ -19,6 +19,10 @@ $(function() {
     <input class="form-control" name="song_text" id="tags" placeholder="Enter a song" />
     {% csrf_token %}
   </form>
-  <button type="submit" class="btn btn-primary btn-lg" form="song_form" value="Submit">Submit</button>
+  <button type="submit" class="btn btn-primary btn-lg" form="song_form" value="Submit">Search</button>
+  <span style="font-weight:bold;">Orrrrr....</span>
+
+  <a class="btn btn-info btn-lg" href="results/random/" role="button">Random</a>
+
 </div>
 {% endblock %}
