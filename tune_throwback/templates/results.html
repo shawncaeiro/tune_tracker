@@ -28,6 +28,7 @@ $(function() {
       {% csrf_token %}
       <button type="submit" class="btn btn-primary" form="song_form" value="Submit">Search</button>
       <a class="btn btn-info" href="results/random/" role="button">Random</a>
+      <a class="btn btn-info" href="spotify_auth/{{ ranked.song.pk }}" role="button">Connect to Spotify</a>
     </form>
   </div>
 

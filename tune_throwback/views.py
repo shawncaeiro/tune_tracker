@@ -1,10 +1,16 @@
 import json
 import sys
 import random
+import requests
+import urllib
+import base64
+from requests.auth import HTTPBasicAuth
 
 from django.shortcuts import redirect, render
 
 from tune_throwback.models import Song, Rank
+import tune_throwback.spotify_web_api as spot
+from private import SPOTIFY_CLIENT_ID, SPOTIFY_SECRET
 
 
 def home_page(request):
@@ -29,12 +35,8 @@ def results_page_helper(request, r_song):
     return render(request, 'results.html', {'all_songs': j_songs, 'ranked': r_song, 'songs':similar_songs, 'spotify_ids':spotify_ids})
 
 def results_page_random(request):
-    #song = random.choice(Song.objects.all())
-    #ranked_song = Rank.objects.filter(song__title = song.title, song__artist = song.artist).order_by('rank')[0]
     ranked_song = random.choice(Rank.objects.filter(rank__lte = 25))
     return redirect('/results/{0}/'.format(ranked_song.song.pk))
-
-#def results_page_post
 
 def results_page(request, song_id = None):
     if str(song_id).isdigit():
@@ -53,3 +55,31 @@ def results_page(request, song_id = None):
             return redirect('/')            
     else:
         return redirect('/')
+
+def spotify_return(request):
+    try:
+        code = request.GET["code"]
+        state = request.GET["state"]
+    except:
+        return redirect('/')
+    sp_redirect = "http://127.0.0.1:8000/spotify_return/"
+    
+    at, success = spot.get_auth_token(code, state, sp_redirect)
+    if not success:
+        return redirect('/')
+
+    s_id, success = spot.get_spotify_user_id(at)
+    if not success:
+        return redirect('/')
+
+    playlists, success = spot.get_spotify_user_playlists(at, s_id)
+    if not success:
+        return redirect('/')
+
+    return render(request, 'spotify_upload.html', {'a':playlists})
+
+def spotify_auth(request, state):
+    url, success = spot.get_spotify_code_url(state)
+    if not success:
+        return redirect('/')
+    return redirect(url)
