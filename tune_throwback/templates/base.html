@@ -18,13 +18,22 @@
         <h3 class="text-muted">Tune Throwback</h3>
       </a>
     </div>
-    {% block body %}{% endblock %}
-  </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+        <a class="close" data-dismiss="alert" href="#">&times;</a>
+      {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
+  {% block body %}{% endblock %}
+</div>
 
-  <footer class="footer">
-    <div class="container">
-      <p class="text-muted">Developed By Shawn Caeiro.</p>
-    </div>
-  </footer>
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">Developed By Shawn Caeiro.</p>
+  </div>
+</footer>
 </body>
 </html>

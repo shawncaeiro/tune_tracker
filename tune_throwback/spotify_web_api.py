@@ -9,7 +9,7 @@ def get_spotify_code_url(state):
     try:
         client_id = SPOTIFY_CLIENT_ID
         redirect_uri = "http://127.0.0.1:8000/spotify_return/"
-        scope = "user-read-private user-read-email"
+        scope = "playlist-modify-public playlist-modify-private"
 
         f = { 'client_id' : client_id, 
         'redirect_uri' : redirect_uri,
@@ -58,7 +58,22 @@ def get_spotify_user_playlists(token, s_id):
         url = 'https://api.spotify.com/v1/users/{0}/playlists'.format(s_id)
         r = requests.get(url, headers= params)
         d = json.loads(r.text)
-        playlists = [p['name'] for p in d['items']]
+        playlists = [[p['name'],p['id']] for p in d['items']]
     except:
         return None, False
     return playlists, True
+
+def add_songs_to_playlist(s_id, token, playlist, songs):
+    headers = {'Authorization' : 'Bearer {0}'.format(token)}
+    url = 'https://api.spotify.com/v1/users/{0}/playlists/{1}/tracks'.format(s_id,playlist)
+    body = {"uris": []}
+    for song in songs:
+        body["uris"].append("spotify:track:{0}".format(song))
+    body = json.dumps(body)
+    r = requests.post(url, headers= headers, data=body)
+    if r.status_code == 201:
+        return None, True
+    else:
+        return str(r.text), False
+    #except Exception as e:
+    #    return str(e), False
