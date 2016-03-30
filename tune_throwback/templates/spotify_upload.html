@@ -1,9 +1,57 @@
 {% extends 'base.html' %}
 
 {% block header %}
+<script>
+var b = document.getelementbyid('submitForm')
+b.onclick = function(){
+    form1.submit();
+    form2.submit();
+}
+</script>
 {% endblock %}
 
 {% block body %}
-Your Playlists:
-{{ a }} 
+
+<div class="form-group">
+	<label for="sel1">Choose a Playlist:</label>
+	<select class="form-control" id="sel1">
+		{% for playlist in playlists %}
+		<option>{{playlist}}</option>
+		{% endfor %}
+	</select>
+	<button type="submit" class="btn btn-primary" form="song_form" value="Submit" id="submitForm">Import</button>
+	<br>
+</div>
+
+<form role="form">
+	<table class="table table-hover" style="background-color:white;">
+		<thead>
+			<tr>
+				<th>Add?</th>
+				<th>Song</th>
+				<th>Artist</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for ranked in songs %}
+			<tr>
+				<td>
+					<div class="checkbox">
+						<label><input name="recommendations" type="checkbox" value="{{ranked.song.spotify_id}}" checked="checked"></label>
+					</div>
+				</td>
+				<td>
+					<a href="/results/{{ranked.song.pk|safe}}/">
+						{{ ranked.song.title | safe }}
+					</a>
+				</td>
+				<td>
+					{{ranked.song.artist | safe }}
+				</td>              
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</form>
+
 {% endblock %}

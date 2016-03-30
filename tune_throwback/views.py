@@ -76,7 +76,10 @@ def spotify_return(request):
     if not success:
         return redirect('/')
 
-    return render(request, 'spotify_upload.html', {'a':playlists})
+    org_song = Rank.objects.filter(song__pk=state).order_by('rank')[0]
+    similar_songs = Rank.objects.filter(week=org_song.week).order_by('rank')[:25]
+
+    return render(request, 'spotify_upload.html', {'playlists':playlists, 'songs':similar_songs})
 
 def spotify_auth(request, state):
     url, success = spot.get_spotify_code_url(state)
