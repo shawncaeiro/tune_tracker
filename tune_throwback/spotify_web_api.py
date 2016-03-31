@@ -8,13 +8,14 @@ import os
 try:
     SPOTIFY_CLIENT_ID = os.environ['CLIENT_ID']
     SPOTIFY_SECRET = os.environ['CLIENT_SECRET']
+    REDIRECT_URI = os.environ['REDIRECT_URI']
 except:
-    from private import SPOTIFY_CLIENT_ID, SPOTIFY_SECRET
+    from private import SPOTIFY_CLIENT_ID, SPOTIFY_SECRET, REDIRECT_URI
 
 def get_spotify_code_url(state):
     try:
         client_id = SPOTIFY_CLIENT_ID
-        redirect_uri = "http://127.0.0.1:8000/spotify_return/"
+        redirect_uri = REDIRECT_URI
         scope = "playlist-modify-public playlist-modify-private"
 
         f = { 'client_id' : client_id, 
@@ -37,7 +38,7 @@ def get_auth_token(code, state, redirect):
         c_se = SPOTIFY_SECRET
         params = {'grant_type' : 'authorization_code',
         'code' : code,
-        'redirect_uri' : "http://127.0.0.1:8000/spotify_return/",
+        'redirect_uri' : REDIRECT_URI,
         'state' : state}
         auth = HTTPBasicAuth(c_id,c_se)
         r = requests.post(url, auth=auth, data=params)
