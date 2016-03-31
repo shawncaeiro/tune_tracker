@@ -12,7 +12,6 @@ from django.shortcuts import redirect, render
 
 from tune_throwback.models import Song, Rank
 import tune_throwback.spotify_web_api as spot
-from private import SPOTIFY_CLIENT_ID, SPOTIFY_SECRET
 
 
 def home_page(request):

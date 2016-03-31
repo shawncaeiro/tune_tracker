@@ -3,7 +3,13 @@ import base64
 import json
 import requests
 from requests.auth import HTTPBasicAuth
-from private import SPOTIFY_CLIENT_ID, SPOTIFY_SECRET
+import os
+
+try:
+    SPOTIFY_CLIENT_ID = os.environ['CLIENT_ID']
+    SPOTIFY_SECRET = os.environ['CLIENT_SECRET']
+except:
+    from private import SPOTIFY_CLIENT_ID, SPOTIFY_SECRET
 
 def get_spotify_code_url(state):
     try:
